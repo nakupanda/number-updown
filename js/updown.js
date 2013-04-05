@@ -24,6 +24,7 @@
 			this.$element = $element;
 			this.options = $.extend(this.defaultOptions, options, true);
 			this.watchKeyboard();
+			this.watchMouse();
 		},
 		watchKeyboard: function(){
 			var self = this;
@@ -33,6 +34,21 @@
 					self.keysMap[code].call(self, event);
 					event.preventDefault();
 				}
+			});
+			
+			return this;
+		},
+		watchMouse: function(){
+			var self = this;
+			this.$element.bind('mousewheel', function(event){
+				var e = window.event || e; // old IE support
+				var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+				if (delta < 0) {
+					self.keysMap[40].call(self, event);
+				}else{
+					self.keysMap[38].call(self, event);
+				}
+				event.preventDefault();
 			});
 			
 			return this;
@@ -82,7 +98,6 @@
 			if (this.options.min != null && val < this.options.min ) {
 				val = this.options.circle ? this.options.max : this.options.min;
 			}
-			console.log(val);
 			this.setInputVal(val);
 			
 			return this;
