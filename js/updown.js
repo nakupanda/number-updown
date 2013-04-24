@@ -40,8 +40,8 @@
 		},
 		watchMouse: function(){
 			var self = this;
-			this.$element.bind('mousewheel', function(event){
-				var e = window.event || e; // old IE support
+			this.$element.bind('mousewheel DOMMouseScroll', function(event){
+				var e = window.event || event; // old IE support
 				var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
 				if (delta < 0) {
 					self.keysMap[40].call(self, event);
