@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Examples</title>
+</head>
+<body>
+
+<h3>Simplest</h3>
+<input type="text" id="simplest" value="0" />
+
+<h3>Custom step. (Shift key supported)</h3>
+<input type="text" id="step" value="0" />
+
+<h3>Min/Max</h3>
+<input type="text" id="minMax" value="0" />
+
+<h3>Min/Max + Circle</h3>
+<input type="text" id="minMaxCircle" value="0" />
+
+<h3>Controlled by buttons</h3>
+<input type="text" id="controlledByButtons" value="0" />
+<input type="button" id="btnIncrease" value="+" />
+<input type="button" id="btnDecrease" value="-"/>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/updown.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#simplest').updown();
+
+	$('#step').updown({
+	    step: 10,
+	    shiftStep: 100
+	});
+
+	$('#minMax').updown({
+	    min: -10,
+	    max: 10
+	});
+
+	$('#minMaxCircle').updown({
+	    min: -10,
+	    max: 10,
+	    circle: true
+	});
+	
+	// Controlled by buttons
+	var $controlledByButtons = $('#controlledByButtons');
+	$controlledByButtons.updown({
+	    step: 10,
+	    shiftStep: 100
+	});
+	var $updown = $controlledByButtons.data('updown');
+	$('#btnIncrease').click(function(event){
+		$updown.increase(event);
+		$updown.triggerEvents();
+	});
+	$('#btnDecrease').click(function(event){
+		$updown.decrease(event);
+		$updown.triggerEvents();
+	});
+});
+</script>
+</body>
+</html>
