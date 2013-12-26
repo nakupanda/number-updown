@@ -1,6 +1,10 @@
 /* ================================================
- * Increase/decrease number for Input field by using arrow up/down keys
- * No modern version of jQuery UI is required
+ * Increase/decrease number for Input field by using arrow up/down keys.
+ * 
+ * Useful when it's not possible to use HTML5's Number.
+ * 
+ * No modern version of jQuery UI is required.
+ * 
  * Licensed under The MIT License.
  * ================================================ */
 
@@ -25,6 +29,8 @@
             this.options = $.extend(true, this.defaultOptions, options);
             this.watchKeyboard();
             this.watchMouse();
+            
+            return this;
         },
         watchKeyboard: function() {
             var self = this;
