@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="assets/jquery/jquery-1.10.2.min.js"></script>
+<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/prettify/run_prettify.js"></script>
+<script src="assets/number-updown/js/updown.js"></script>
+<meta charset="utf-8" />
+<title>jQuery number-updown plugin examples</title>
+<style>
+    .demo-input {
+        width: 200px;
+    }
+</style>
+</head>
+<body style="padding-bottom: 100px;">
+<div class="container">
+    
+    <h2>jQuery number-updown plugin</h2>
+    <hr />
+    <p>
+        Increase/decrease number for Input field by using arrow up/down keys or mousewheel.
+    </p>
+    
+    <!-- Examples -->
+    <a name="examples"></a>
+    <h2>Examples</h2>
+    <hr />
+    
+    <h3>Simplest</h3>
+    <div class="source-code">
+        <!--
+        $('#simplest').updown();
+        -->
+    </div>
+    <div class="demo">
+        <input type="text" class="form-control demo-input" id="simplest" value="0" />
+    </div>
+    
+    <h3>Custom step. (Shift key supported)</h3>
+    <div class="source-code">
+        <!--
+        $('#step').updown({
+            step: 10,
+            shiftStep: 100
+        });
+        -->
+    </div>
+    <div class="demo">
+        <input type="text" class="form-control demo-input" id="step" value="0" />
+    </div>
+    
+    <h3>Min/Max</h3>
+    <div class="source-code">
+        <!--
+        $('#minMax').updown({
+            min: -10,
+            max: 10
+        });
+        -->
+    </div>
+    <div class="demo">
+        <input type="text" class="form-control demo-input" id="minMax" value="0" />
+    </div>
+    
+    <h3>Min/Max + Circle</h3>
+    <div class="source-code">
+        <!--
+        $('#minMaxCircle').updown({
+            min: -10,
+            max: 10,
+            circle: true
+        });
+        -->
+    </div>
+    <div class="demo">
+        <input type="text" class="form-control demo-input" id="minMaxCircle" value="0" />
+    </div>
+    
+    <h3>Controlled by buttons</h3>
+    <div class="source-code">
+        <!--
+        // Controlled by buttons
+        var $controlledByButtons = $('#controlledByButtons');
+        $controlledByButtons.updown({
+            step: 10,
+            shiftStep: 100
+        });
+        var $updown = $controlledByButtons.data('updown');
+        $('#btnIncrease').click(function(event){
+            $updown.increase(event);
+            $updown.triggerEvents();
+        });
+        $('#btnDecrease').click(function(event){
+            $updown.decrease(event);
+            $updown.triggerEvents();
+        });
+        -->
+    </div>
+    <div class="demo">
+        <div style="display: inline-block"><input type="text" class="form-control demo-input" id="controlledByButtons" value="0" /></div>
+        <div style="display: inline-block">
+            <button class="btn btn-default" id="btnIncrease">+</button>
+            <button class="btn btn-default" id="btnDecrease">-</button>
+        </div>
+    </div>
+    
+    <hr />
+    <footer class="text-center"><a href="https://github.com/nakupanda/number-updown">The github project.</a> | <a href="mailto:javanoob@hotmail.com">Contact me</a> if you can help to improve this example page.</footer>
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $('.source-code').each(function(index){
+        var $section = $(this);
+        var code = $(this).html().replace('<!--', '').replace('-->', '');
+        
+        // Code preview
+        var $codePreview = $('<pre class="prettyprint lang-javascript"></pre>');
+        $codePreview.text(code);
+        $section.html($codePreview);
+        
+        // Run code
+        eval(code);
+    });
+});
+</script>
+</body>
+</html>
