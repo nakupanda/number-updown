@@ -88,14 +88,25 @@
             return val; //Number(val);
         },
         getInputVal: function() {
-            var value = this.$element.val();
+            var value, matches, output;
 
-            var matches = value.match(/^(-*\d+(?:\.\d+)?)(.*)$/);
+            value = this.$element.val();
 
-            return {
-              value: Number(matches[1]),
-              suffix: matches[2]
-            };
+            matches = value.match(/^(-*\d+(?:\.\d+)?)(.*)$/);
+
+            if (matches) {
+                output = {
+                    value: Number(matches[1]),
+                    suffix: matches[2]
+                };
+            } else {
+                output = {
+                    value: 0,
+                    suffix: ''
+                }
+            }
+
+            return output;
         },
         setInputVal: function(val) {
             this.$element.val(val);
