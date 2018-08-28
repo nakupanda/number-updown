@@ -22,14 +22,47 @@
             watchKeyboard: true,
             watchMouse: true
         };
+
         this.init($element, options);
     };
 
     Updown.prototype = {
         constructor: Updown,
         init: function($element, options) {
+            var self = this;
+
             this.$element = $element;
             this.options = $.extend(true, this.defaultOptions, options);
+
+            $.each(
+                this.options,
+                function(key, value) {
+                    var name, result;
+
+                    name = 'data-' + key;
+
+                    result = $element.attr(name);
+
+                    if (result) {
+                        self.options[key] = result;
+                    }
+                }
+            );
+
+            var keys = [
+                'step',
+                'shiftStep',
+                'min',
+                'max',
+            ];
+
+            $.each(
+              keys,
+              function(key, value) {
+                  self.options[value] = parseFloat(self.options[value]);
+              }
+            );
+
             if (this.options.watchKeyboard) {
                 this.watchKeyboard();
             }
