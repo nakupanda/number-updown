@@ -37,7 +37,7 @@
             var self = this;
             this.$element.bind('keydown', function(event) {
                 var code = (event.keyCode ? event.keyCode : event.which);
-                if (self.keysMap[code] && !isNaN(self.getInputVal())) {
+                if (self.keysMap[code]) {// && !isNaN(self.getInputVal())) {
                     self.keysMap[code].call(self, event);
 
                     if (self.options.preventDefault) {
@@ -85,10 +85,17 @@
                 return 0;
             }
 
-            return Number(val);
+            return val; //Number(val);
         },
         getInputVal: function() {
-            return this.getNumberVal(this.$element.val());
+            var value = this.$element.val();
+
+            var matches = value.match(/^(-*\d+(?:\.\d+)?)(.*)$/);
+
+            return {
+              value: Number(matches[1]),
+              suffix: matches[2]
+            };
         },
         setInputVal: function(val) {
             this.$element.val(val);
@@ -97,21 +104,29 @@
         },
         increase: function(event) {
             var step = event.shiftKey ? this.options.shiftStep : this.options.step;
-            var val = this.getInputVal() + step;
+            var result = this.getInputVal();
+
+            var val = result.value + step;
+
             if (this.options.max !== null && val > this.options.max) {
                 val = this.options.circle ? this.options.min : this.options.max;
             }
-            this.setInputVal(val);
+
+            this.setInputVal(val + result.suffix);
 
             return this;
         },
         decrease: function(event) {
             var step = event.shiftKey ? this.options.shiftStep : this.options.step;
-            var val = this.getInputVal() - step;
+            var result = this.getInputVal();
+
+            var val = result.value - step;
+
             if (this.options.min !== null && val < this.options.min) {
                 val = this.options.circle ? this.options.max : this.options.min;
             }
-            this.setInputVal(val);
+
+            this.setInputVal(val + result.suffix);
 
             return this;
         },
