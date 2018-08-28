@@ -18,7 +18,9 @@
             circle: false,
             min: null,
             max: null,
-            preventDefault: false
+            preventDefault: false,
+            watchKeyboard: true,
+            watchMouse: true
         };
         this.init($element, options);
     };
@@ -28,9 +30,14 @@
         init: function($element, options) {
             this.$element = $element;
             this.options = $.extend(true, this.defaultOptions, options);
-            this.watchKeyboard();
-            this.watchMouse();
-            
+            if (this.options.watchKeyboard) {
+                this.watchKeyboard();
+            }
+
+            if (this.options.watchMouse) {
+                this.watchMouse();
+            }
+
             return this;
         },
         watchKeyboard: function() {
