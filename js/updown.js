@@ -17,7 +17,8 @@
             shiftStep: 6,
             circle: false,
             min: null,
-            max: null
+            max: null,
+            preventDefault: false
         };
         this.init($element, options);
     };
@@ -38,7 +39,10 @@
                 var code = (event.keyCode ? event.keyCode : event.which);
                 if (self.keysMap[code] && !isNaN(self.getInputVal())) {
                     self.keysMap[code].call(self, event);
-                    event.preventDefault();
+
+                    if (self.options.preventDefault) {
+                        event.preventDefault();
+                    }
                 }
             });
 
@@ -54,7 +58,10 @@
                 } else {
                     self.keysMap[38].call(self, event);
                 }
-                event.preventDefault();
+
+                if (self.options.preventDefault) {
+                    event.preventDefault();
+                }
             });
 
             return this;
