@@ -14,7 +14,7 @@
     var Updown = function($element, options) {
         this.defaultOptions = {
             step: 1,
-            shiftStep: 6,
+            shiftStep: 10,
             circle: false,
             min: null,
             max: null,
