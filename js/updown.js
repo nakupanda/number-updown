@@ -14,31 +14,75 @@
     var Updown = function($element, options) {
         this.defaultOptions = {
             step: 1,
-            shiftStep: 6,
+            shiftStep: 10,
             circle: false,
             min: null,
-            max: null
+            max: null,
+            preventDefault: false,
+            watchKeyboard: true,
+            watchMouse: true
         };
+
         this.init($element, options);
     };
 
     Updown.prototype = {
         constructor: Updown,
         init: function($element, options) {
+            var self = this;
+
             this.$element = $element;
             this.options = $.extend(true, this.defaultOptions, options);
-            this.watchKeyboard();
-            this.watchMouse();
-            
+
+            $.each(
+                this.options,
+                function(key, value) {
+                    var name, result;
+
+                    name = 'data-' + key;
+
+                    result = $element.attr(name);
+
+                    if (result) {
+                        self.options[key] = result;
+                    }
+                }
+            );
+
+            var keys = [
+                'step',
+                'shiftStep',
+                'min',
+                'max',
+            ];
+
+            $.each(
+              keys,
+              function(key, value) {
+                  self.options[value] = parseFloat(self.options[value]);
+              }
+            );
+
+            if (this.options.watchKeyboard) {
+                this.watchKeyboard();
+            }
+
+            if (this.options.watchMouse) {
+                this.watchMouse();
+            }
+
             return this;
         },
         watchKeyboard: function() {
             var self = this;
             this.$element.bind('keydown', function(event) {
                 var code = (event.keyCode ? event.keyCode : event.which);
-                if (self.keysMap[code] && !isNaN(self.getInputVal())) {
+                if (self.keysMap[code]) {// && !isNaN(self.getInputVal())) {
                     self.keysMap[code].call(self, event);
-                    event.preventDefault();
+
+                    if (self.options.preventDefault) {
+                        event.preventDefault();
+                    }
                 }
             });
 
@@ -54,7 +98,10 @@
                 } else {
                     self.keysMap[38].call(self, event);
                 }
-                event.preventDefault();
+
+                if (self.options.preventDefault) {
+                    event.preventDefault();
+                }
             });
 
             return this;
@@ -78,10 +125,28 @@
                 return 0;
             }
 
-            return Number(val);
+            return val; //Number(val);
         },
         getInputVal: function() {
-            return this.getNumberVal(this.$element.val());
+            var value, matches, output;
+
+            value = this.$element.val();
+
+            matches = value.match(/^(-*\d+(?:\.\d+)?)(.*)$/);
+
+            if (matches) {
+                output = {
+                    value: Number(matches[1]),
+                    suffix: matches[2]
+                };
+            } else {
+                output = {
+                    value: 0,
+                    suffix: ''
+                }
+            }
+
+            return output;
         },
         setInputVal: function(val) {
             this.$element.val(val);
@@ -90,21 +155,29 @@
         },
         increase: function(event) {
             var step = event.shiftKey ? this.options.shiftStep : this.options.step;
-            var val = this.getInputVal() + step;
+            var result = this.getInputVal();
+
+            var val = result.value + step;
+
             if (this.options.max !== null && val > this.options.max) {
                 val = this.options.circle ? this.options.min : this.options.max;
             }
-            this.setInputVal(val);
+
+            this.setInputVal(val + result.suffix);
 
             return this;
         },
         decrease: function(event) {
             var step = event.shiftKey ? this.options.shiftStep : this.options.step;
-            var val = this.getInputVal() - step;
+            var result = this.getInputVal();
+
+            var val = result.value - step;
+
             if (this.options.min !== null && val < this.options.min) {
                 val = this.options.circle ? this.options.max : this.options.min;
             }
-            this.setInputVal(val);
+
+            this.setInputVal(val + result.suffix);
 
             return this;
         },
